@@ -23,20 +23,20 @@ new #[Layout('layouts.app')] class extends Component
         auth()->user()->tasks()->create($validated);
 
         $this->reset('title', 'description');
-        $this->notice = 'Задачу додано до списку.';
+        $this->notice = 'Task added to the list.';
     }
 
     public function toggleTask(int $taskId): void
     {
         $task = auth()->user()->tasks()->findOrFail($taskId);
         $task->update(['is_completed' => ! $task->is_completed]);
-        $this->notice = $task->is_completed ? 'Задачу виконано.' : 'Задачу повернуто до активних.';
+        $this->notice = $task->is_completed ? 'Task completed.' : 'Task moved back to active.';
     }
 
     public function deleteTask(int $taskId): void
     {
         auth()->user()->tasks()->findOrFail($taskId)->delete();
-        $this->notice = 'Задачу видалено.';
+        $this->notice = 'Task deleted.';
     }
 };
 ?>
@@ -60,7 +60,7 @@ new #[Layout('layouts.app')] class extends Component
                 <span class="flex size-9 items-center justify-center rounded-xl bg-indigo-600 text-white">
                     <svg viewBox="0 0 24 24" fill="none" class="size-5" aria-hidden="true"><path d="m5 12.5 4.2 4.2L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </span>
-                Плануй
+                Planly
             </a>
 
             <div class="flex items-center gap-3 sm:gap-5">
@@ -68,7 +68,7 @@ new #[Layout('layouts.app')] class extends Component
                 <span class="flex size-9 items-center justify-center rounded-full bg-indigo-50 text-sm font-semibold text-indigo-700">{{ $user->initials() }}</span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900">Вийти</button>
+                    <button type="submit" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900">Log out</button>
                 </form>
             </div>
         </div>
@@ -77,18 +77,18 @@ new #[Layout('layouts.app')] class extends Component
     <main class="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
         <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-                <p class="text-sm font-semibold text-indigo-600">Твій особистий простір</p>
-                <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Список справ</h1>
-                <p class="mt-2 text-slate-500">Маленькі кроки щодня ведуть до великих результатів.</p>
+                <p class="text-sm font-semibold text-indigo-600">Your personal space</p>
+                <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Task list</h1>
+                <p class="mt-2 text-slate-500">Small steps every day lead to big results.</p>
             </div>
 
             <div class="flex gap-3">
                 <div class="min-w-28 rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                    <p class="text-xs font-medium text-slate-500">Активні</p>
+                    <p class="text-xs font-medium text-slate-500">Active</p>
                     <p class="mt-1 text-2xl font-semibold tracking-tight">{{ $activeTasks }}</p>
                 </div>
                 <div class="min-w-28 rounded-2xl border border-slate-200 bg-white px-4 py-3">
-                    <p class="text-xs font-medium text-slate-500">Виконані</p>
+                    <p class="text-xs font-medium text-slate-500">Completed</p>
                     <p class="mt-1 text-2xl font-semibold tracking-tight">{{ $completedTasks }}</p>
                 </div>
             </div>
@@ -97,11 +97,11 @@ new #[Layout('layouts.app')] class extends Component
         <div class="mt-9 grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
             <section class="order-2 min-w-0 lg:order-1">
                 <div class="flex flex-wrap items-center justify-between gap-4">
-                    <h2 class="text-lg font-semibold">Мої задачі <span class="ml-1 text-sm font-medium text-slate-400">{{ $totalTasks }}</span></h2>
+                    <h2 class="text-lg font-semibold">My tasks <span class="ml-1 text-sm font-medium text-slate-400">{{ $totalTasks }}</span></h2>
                     <div class="flex rounded-xl border border-slate-200 bg-white p-1 text-sm">
-                        <button type="button" wire:click="$set('filter', 'all')" class="rounded-lg px-3 py-2 font-medium transition {{ $filter === 'all' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">Усі</button>
-                        <button type="button" wire:click="$set('filter', 'active')" class="rounded-lg px-3 py-2 font-medium transition {{ $filter === 'active' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">Активні</button>
-                        <button type="button" wire:click="$set('filter', 'completed')" class="rounded-lg px-3 py-2 font-medium transition {{ $filter === 'completed' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">Виконані</button>
+                        <button type="button" wire:click="$set('filter', 'all')" class="rounded-lg px-3 py-2 font-medium transition {{ $filter === 'all' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">All</button>
+                        <button type="button" wire:click="$set('filter', 'active')" class="rounded-lg px-3 py-2 font-medium transition {{ $filter === 'active' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">Active</button>
+                        <button type="button" wire:click="$set('filter', 'completed')" class="rounded-lg px-3 py-2 font-medium transition {{ $filter === 'completed' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">Completed</button>
                     </div>
                 </div>
 
@@ -112,7 +112,7 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="mt-4 space-y-3">
                     @forelse ($tasks as $task)
                         <article wire:key="task-{{ $task->id }}" class="group flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/40 transition hover:border-slate-300">
-                            <button type="button" wire:click="toggleTask({{ $task->id }})" aria-label="{{ $task->is_completed ? 'Повернути задачу до активних' : 'Позначити задачу виконаною' }}" class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border-2 transition {{ $task->is_completed ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-slate-300 text-transparent hover:border-indigo-500' }}">
+                            <button type="button" wire:click="toggleTask({{ $task->id }})" aria-label="{{ $task->is_completed ? 'Move task back to active' : 'Mark task as completed' }}" class="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border-2 transition {{ $task->is_completed ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-slate-300 text-transparent hover:border-indigo-500' }}">
                                 @if ($task->is_completed)
                                     <svg viewBox="0 0 20 20" fill="none" class="size-4" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 @endif
@@ -123,10 +123,10 @@ new #[Layout('layouts.app')] class extends Component
                                 @if ($task->description)
                                     <p class="mt-1.5 text-sm leading-6 text-slate-500">{{ $task->description }}</p>
                                 @endif
-                                <p class="mt-3 text-xs text-slate-400">Додано {{ $task->created_at->format('d.m.Y') }}</p>
+                                <p class="mt-3 text-xs text-slate-400">Added {{ $task->created_at->format('d.m.Y') }}</p>
                             </div>
 
-                            <button type="button" wire:click="deleteTask({{ $task->id }})" wire:confirm="Видалити цю задачу?" aria-label="Видалити задачу" class="self-start rounded-lg p-2 text-slate-300 opacity-100 transition hover:bg-rose-50 hover:text-rose-600 sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100">
+                            <button type="button" wire:click="deleteTask({{ $task->id }})" wire:confirm="Delete this task?" aria-label="Delete task" class="self-start rounded-lg p-2 text-slate-300 opacity-100 transition hover:bg-rose-50 hover:text-rose-600 sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100">
                                 <svg viewBox="0 0 24 24" fill="none" class="size-5" aria-hidden="true"><path d="M4 7h16M10 11v6m4-6v6M5 7l1 13h12l1-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </button>
                         </article>
@@ -135,8 +135,8 @@ new #[Layout('layouts.app')] class extends Component
                             <span class="mx-auto flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600">
                                 <svg viewBox="0 0 24 24" fill="none" class="size-6" aria-hidden="true"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                             </span>
-                            <h3 class="mt-4 font-semibold">{{ $filter === 'all' ? 'Тут поки порожньо' : 'Задач не знайдено' }}</h3>
-                            <p class="mt-1 text-sm text-slate-500">{{ $filter === 'all' ? 'Додай першу задачу у формі поруч.' : 'Спробуй обрати інший фільтр.' }}</p>
+                            <h3 class="mt-4 font-semibold">{{ $filter === 'all' ? 'Nothing here yet' : 'No tasks found' }}</h3>
+                            <p class="mt-1 text-sm text-slate-500">{{ $filter === 'all' ? 'Add your first task using the form.' : 'Try selecting a different filter.' }}</p>
                         </div>
                     @endforelse
                 </div>
@@ -148,26 +148,26 @@ new #[Layout('layouts.app')] class extends Component
                         <svg viewBox="0 0 24 24" fill="none" class="size-5" aria-hidden="true"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                     </span>
                     <div>
-                        <h2 class="font-semibold">Нова задача</h2>
-                        <p class="text-xs text-slate-500">Запиши те, що потрібно зробити</p>
+                        <h2 class="font-semibold">New task</h2>
+                        <p class="text-xs text-slate-500">Write down what you need to do</p>
                     </div>
                 </div>
 
                 <form wire:submit="addTask" class="mt-5 space-y-4">
                     <div>
-                        <label for="task-title" class="mb-2 block text-sm font-medium text-slate-700">Назва</label>
-                        <input id="task-title" type="text" wire:model="title" maxlength="160" required placeholder="Наприклад, завершити звіт" class="w-full rounded-xl border border-slate-300 px-3.5 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100">
+                        <label for="task-title" class="mb-2 block text-sm font-medium text-slate-700">Title</label>
+                        <input id="task-title" type="text" wire:model="title" maxlength="160" required placeholder="For example, finish the report" class="w-full rounded-xl border border-slate-300 px-3.5 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100">
                         @error('title') <p class="mt-2 text-sm text-rose-600">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label for="task-description" class="mb-2 block text-sm font-medium text-slate-700">Опис <span class="font-normal text-slate-400">необов’язково</span></label>
-                        <textarea id="task-description" wire:model="description" rows="3" maxlength="1000" placeholder="Додай трохи деталей…" class="w-full resize-y rounded-xl border border-slate-300 px-3.5 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"></textarea>
+                        <label for="task-description" class="mb-2 block text-sm font-medium text-slate-700">Description <span class="font-normal text-slate-400">optional</span></label>
+                        <textarea id="task-description" wire:model="description" rows="3" maxlength="1000" placeholder="Add some details…" class="w-full resize-y rounded-xl border border-slate-300 px-3.5 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"></textarea>
                         @error('description') <p class="mt-2 text-sm text-rose-600">{{ $message }}</p> @enderror
                     </div>
                     <button type="submit" wire:loading.attr="disabled" class="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200 disabled:opacity-60">
                         <svg wire:loading.remove wire:target="addTask" viewBox="0 0 24 24" fill="none" class="size-4" aria-hidden="true"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                        <span wire:loading.remove wire:target="addTask">Додати задачу</span>
-                        <span wire:loading wire:target="addTask">Додаємо…</span>
+                        <span wire:loading.remove wire:target="addTask">Add task</span>
+                        <span wire:loading wire:target="addTask">Adding…</span>
                     </button>
                 </form>
             </aside>
