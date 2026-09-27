@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Contact;
+use App\Models\Task;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +24,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);*/
 
-        Contact::factory(20)->create();
+        Task::factory(20)->create();
     }
 }
