@@ -12,3 +12,7 @@ cp .env.example .env
 php artisan key:generate
 php artisan dev
 ```
+
+Demo:
+
+![demo.gif](demo.gif)
