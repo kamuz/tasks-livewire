@@ -3,6 +3,9 @@
 Install:
 
 ```
+git clone git@github.com:kamuz/tasks-livewire.git
+cd tasks-livewire
+valet link tasks-livewire
 composer update
 npm install
 cp .env.example .env
